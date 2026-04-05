@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AI Choir Practice System</title>
+    <style>
+        :root {
+            color-scheme: light;
+            --bg: #f5efe4;
+            --bg-accent: #e6dbc9;
+            --card: rgba(255, 252, 245, 0.88);
+            --ink: #1d2f2f;
+            --muted: #57676a;
+            --line: rgba(29, 47, 47, 0.12);
+            --primary: #145c52;
+            --primary-strong: #0d473f;
+            --error: #8f2d1e;
+            --shadow: 0 24px 60px rgba(29, 47, 47, 0.12);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: "Trebuchet MS", "Gill Sans", sans-serif;
+            color: var(--ink);
+            background:
+                radial-gradient(circle at top left, rgba(255, 255, 255, 0.8), transparent 28%),
+                radial-gradient(circle at bottom right, rgba(20, 92, 82, 0.14), transparent 30%),
+                linear-gradient(135deg, var(--bg), var(--bg-accent));
+            display: grid;
+            place-items: center;
+            padding: 24px;
+        }
+
+        .app-shell {
+            width: min(780px, 100%);
+            background: var(--card);
+            border: 1px solid var(--line);
+            border-radius: 28px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            backdrop-filter: blur(12px);
+        }
+
+        .hero {
+            padding: 32px 32px 20px;
+            background:
+                linear-gradient(135deg, rgba(20, 92, 82, 0.12), rgba(255, 255, 255, 0)),
+                linear-gradient(180deg, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0));
+        }
+
+        .eyebrow {
+            margin: 0 0 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            font-size: 0.76rem;
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: clamp(2rem, 4vw, 3.3rem);
+            line-height: 0.95;
+        }
+
+        .subtitle {
+            margin: 16px 0 0;
+            max-width: 52ch;
+            color: var(--muted);
+            line-height: 1.6;
+        }
+
+        .content {
+            padding: 0 32px 32px;
+            display: grid;
+            gap: 20px;
+        }
+
+        .panel {
+            background: rgba(255, 255, 255, 0.68);
+            border: 1px solid var(--line);
+            border-radius: 22px;
+            padding: 22px;
+        }
+
+        .panel h2 {
+            margin: 0 0 12px;
+            font-size: 1.1rem;
+        }
+
+        .controls {
+            display: grid;
+            gap: 14px;
+        }
+
+        .upload-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            align-items: center;
+        }
+
+        input[type="file"] {
+            flex: 1 1 280px;
+            border: 1px dashed var(--line);
+            border-radius: 16px;
+            padding: 14px;
+            background: rgba(255, 255, 255, 0.75);
+        }
+
+        button {
+            border: 0;
+            border-radius: 999px;
+            padding: 14px 22px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-strong));
+            color: white;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: transform 160ms ease, box-shadow 160ms ease;
+            box-shadow: 0 16px 30px rgba(20, 92, 82, 0.22);
+        }
+
+        button:hover:not(:disabled) {
+            transform: translateY(-1px);
+        }
+
+        button:disabled {
+            opacity: 0.7;
+            cursor: progress;
+        }
+
+        .status {
+            min-height: 24px;
+            margin: 0;
+            color: var(--muted);
+        }
+
+        .status.error {
+            color: var(--error);
+        }
+
+        .result {
+            display: none;
+            gap: 14px;
+        }
+
+        .result.visible {
+            display: grid;
+        }
+
+        audio {
+            width: 100%;
+        }
+
+        .details {
+            display: grid;
+            gap: 8px;
+            color: var(--muted);
+            font-size: 0.95rem;
+        }
+
+        code {
+            font-family: Consolas, "Courier New", monospace;
+            color: var(--primary-strong);
+        }
+
+        .summary {
+            margin: 0;
+            color: var(--muted);
+            line-height: 1.6;
+        }
+
+        @media (max-width: 640px) {
+            .hero,
+            .content {
+                padding-left: 20px;
+                padding-right: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <main class="app-shell">
+        <section class="hero">
+            <p class="eyebrow">CPU-based rehearsal pipeline</p>
+            <h1>AI Choir Practice System</h1>
+            <p class="subtitle">
+                Upload a MusicXML score, let the backend parse note events, create a MIDI arrangement,
+                render it through FluidSynth, and play the generated WAV immediately in the browser.
+            </p>
+        </section>
+
+        <section class="content">
+            <section class="panel">
+                <h2>Upload MusicXML</h2>
+                <form id="upload-form" class="controls">
+                    <div class="upload-row">
+                        <input id="music-file" type="file" accept=".musicxml,.xml,.mxl" required />
+                        <button id="upload-button" type="submit">Generate Practice Audio</button>
+                    </div>
+                    <p id="status" class="status">Choose a MusicXML file to begin.</p>
+                </form>
+            </section>
+
+            <section id="result" class="panel result">
+                <h2>Generated Audio</h2>
+                <audio id="audio-player" controls preload="metadata"></audio>
+                <div class="details">
+                    <div>WAV file: <code id="wav-path"></code></div>
+                    <div>MIDI file: <code id="midi-path"></code></div>
+                    <div id="summary" class="summary"></div>
+                </div>
+            </section>
+        </section>
+    </main>
+
+    <script>
+        const form = document.getElementById("upload-form");
+        const fileInput = document.getElementById("music-file");
+        const uploadButton = document.getElementById("upload-button");
+        const status = document.getElementById("status");
+        const result = document.getElementById("result");
+        const audioPlayer = document.getElementById("audio-player");
+        const wavPath = document.getElementById("wav-path");
+        const midiPath = document.getElementById("midi-path");
+        const summary = document.getElementById("summary");
+
+        const setStatus = (message, isError = false) => {
+            status.textContent = message;
+            status.classList.toggle("error", isError);
+        };
+
+        form.addEventListener("submit", async (event) => {
+            event.preventDefault();
+
+            const file = fileInput.files?.[0];
+            if (!file) {
+                setStatus("Please choose a MusicXML file first.", true);
+                return;
+            }
+
+            uploadButton.disabled = true;
+            setStatus("Uploading, parsing, and rendering audio...");
+            result.classList.remove("visible");
+
+            const formData = new FormData();
+            formData.append("file", file);
+
+            try {
+                const response = await fetch("/upload-music", {
+                    method: "POST",
+                    body: formData,
+                });
+
+                const payload = await response.json();
+                if (!response.ok) {
+                    throw new Error(payload.detail || "Upload failed.");
+                }
+
+                const partCount = payload.parsed_score.parts.length;
+                const noteCount = payload.parsed_score.parts.reduce((total, part) => {
+                    return total + part.notes.filter((note) => !note.is_rest).length;
+                }, 0);
+
+                audioPlayer.src = `${payload.audio_url}?t=${Date.now()}`;
+                wavPath.textContent = payload.wav_file_path;
+                midiPath.textContent = payload.midi_file_path;
+                summary.textContent = `Rendered ${noteCount} note events across ${partCount} part${partCount === 1 ? "" : "s"} at ${payload.parsed_score.tempo_bpm} BPM.`;
+                result.classList.add("visible");
+                setStatus("Audio generated successfully.");
+            } catch (error) {
+                setStatus(error.message || "Something went wrong while generating audio.", true);
+            } finally {
+                uploadButton.disabled = false;
+            }
+        });
+    </script>
+</body>
+</html>
