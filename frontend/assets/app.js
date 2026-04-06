@@ -1,4 +1,5 @@
 const AUTH_STORAGE_KEY = "virtualChoirAuth";
+const API_BASE_URL = "https://virtualchoir-backend.onrender.com"; // Update this with your Render backend URL
 
 const byId = (id) => document.getElementById(id);
 
@@ -83,7 +84,8 @@ const authorizedFetch = (url, options = {}) => {
   if (token) {
     headers.set("Authorization", `Bearer ${token}`);
   }
-  return fetch(url, { ...options, headers });
+  const fullUrl = url.startsWith('http') ? url : API_BASE_URL + url;
+  return fetch(fullUrl, { ...options, headers });
 };
 
 const loadCurrentUser = async () => {
@@ -156,7 +158,7 @@ const initPracticePage = () => {
     formData.append("file", file);
 
     try {
-      const response = await fetch("/upload-score", {
+      const response = await fetch(API_BASE_URL + "/upload-score", {
         method: "POST",
         body: formData,
       });
@@ -271,7 +273,7 @@ const initStudioPage = () => {
 
   const loadTakes = async () => {
     try {
-      const response = await fetch("/voice-takes");
+      const response = await fetch(API_BASE_URL + "/voice-takes");
       const takes = await safeJson(response);
       if (!response.ok) {
         throw new Error("Could not load voice takes.");
@@ -394,7 +396,7 @@ const initStudioPage = () => {
     }
 
     try {
-      const response = await fetch("/upload-voice", {
+      const response = await fetch(API_BASE_URL + "/upload-voice", {
         method: "POST",
         body: formData,
       });
@@ -466,7 +468,7 @@ const initPilotPage = () => {
     setStatus(status, "Saving pilot request...");
 
     try {
-      const response = await fetch("/pilot-interest", {
+      const response = await fetch(API_BASE_URL + "/pilot-interest", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
@@ -551,7 +553,7 @@ const renderBillingPlans = async (user) => {
   }
 
   try {
-    const response = await fetch("/billing/plans");
+    const response = await fetch(API_BASE_URL + "/billing/plans");
     const plans = await safeJson(response);
     if (!response.ok) {
       throw new Error("Could not load billing plans.");
@@ -694,7 +696,7 @@ const initAuthPage = () => {
     signupSubmit.disabled = true;
     setStatus(authStatus, "Creating account...");
     try {
-      const response = await fetch("/auth/signup", {
+      const response = await fetch(API_BASE_URL + "/auth/signup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -729,7 +731,7 @@ const initAuthPage = () => {
     loginSubmit.disabled = true;
     setStatus(authStatus, "Signing in...");
     try {
-      const response = await fetch("/auth/login", {
+      const response = await fetch(API_BASE_URL + "/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -893,7 +895,7 @@ const initHomeStats = () => {
     return;
   }
 
-  fetch("/voice-takes")
+  fetch(API_BASE_URL + "/voice-takes")
     .then((response) => response.json())
     .then((takes) => {
       takeCount.textContent = `${Array.isArray(takes) ? takes.length : 0}`;
