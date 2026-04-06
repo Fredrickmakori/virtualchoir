@@ -129,6 +129,35 @@ If your `SITE_URL` is public, the backend will send PayHero callbacks to:
 
 If you are running locally on `127.0.0.1` or `localhost`, the app skips the callback URL automatically and relies on manual status refresh from the Auth page.
 
+## Vercel + Render Deployment
+
+To host the frontend on Vercel and the backend on Render, use the supplied `vercel.json` and `render.yaml` files.
+
+On Render, set these environment variables:
+
+- `SUPABASE_URL`
+- `SUPABASE_ANON_KEY`
+- `SUPABASE_SERVICE_ROLE_KEY`
+- `SITE_URL` (your Vercel frontend URL)
+- `ADMIN_EMAILS`
+- `PAYHERO_BASIC_AUTH_TOKEN`
+- `PAYHERO_CHANNEL_ID`
+- `PAYHERO_PROVIDER`
+- `PAYHERO_CREDENTIAL_ID`
+- `PAYHERO_NETWORK_CODE`
+- `PAYHERO_CALLBACK_TOKEN`
+- `PAYHERO_CURRENCY`
+- `PAYHERO_PLAN_AMOUNT_STARTER`
+- `PAYHERO_PLAN_AMOUNT_DIRECTOR`
+- `PAYHERO_PLAN_AMOUNT_ORGANIZATION`
+
+The current backend reads only the PayHero basic auth token and channel ID for billing, so the PayHero dashboard values map like this:
+
+- `BASIC AUTH TOKEN` → `PAYHERO_BASIC_AUTH_TOKEN`
+- `Payment Channel ID` → `PAYHERO_CHANNEL_ID`
+
+The API Username/Password shown in the PayHero dashboard are not used by this backend integration.
+
 ## API
 
 ### `POST /upload-score`

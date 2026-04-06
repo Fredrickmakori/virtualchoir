@@ -1,5 +1,5 @@
 const AUTH_STORAGE_KEY = "virtualChoirAuth";
-const API_BASE_URL = "https://virtualchoir-backend.onrender.com"; // Update this with your Render backend URL
+const API_BASE_URL = "https://virtualchoir.onrender.com"; // Update this with your Render backend URL
 
 const byId = (id) => document.getElementById(id);
 
