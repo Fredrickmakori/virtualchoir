@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Desk | VirtualChoir Studio</title>
+  <link rel="stylesheet" href="/assets/styles.css" />
+  <script src="/assets/app.js" defer></script>
+</head>
+<body data-page="admin">
+  <div class="layout">
+    <header class="topbar">
+      <div class="brand"><span class="mark" aria-hidden="true"></span><span>VirtualChoir Studio</span></div>
+      <nav class="nav">
+        <a href="/">Home</a>
+        <a href="/practice">Practice</a>
+        <a href="/studio">Studio</a>
+        <a href="/pilot">Pilot Desk</a>
+        <a href="/auth">Auth</a>
+        <a href="/admin" class="active">Admin</a>
+      </nav>
+      <div class="topbar-tag">Admin Window</div>
+    </header>
+
+    <section class="page-intro">
+      <p class="eyebrow" style="color:var(--accent-deep)">Admin Desk</p>
+      <h1 class="page-title">Review accounts, leads, and payment state.</h1>
+      <p class="copy">This route is protected by Supabase-authenticated admin roles. Use it to review pilot signups and account health without exposing that data publicly.</p>
+    </section>
+
+    <section class="window">
+      <div class="surface-head">
+        <div>
+          <h2>Admin Access</h2>
+          <p class="copy">Sign in with an admin account on the Auth route first, then return here.</p>
+        </div>
+        <span id="admin-access-badge" class="badge">Checking</span>
+      </div>
+      <p id="admin-status" class="status">Checking your admin session...</p>
+    </section>
+
+    <section class="section">
+      <div class="cards">
+        <article class="card">
+          <h3>Users</h3>
+          <p id="admin-user-count" class="stat-value">0</p>
+          <p class="copy">Authenticated accounts from Supabase and their app roles.</p>
+        </article>
+        <article class="card">
+          <h3>Pilot Leads</h3>
+          <p id="admin-lead-count" class="stat-value">0</p>
+          <p class="copy">Lead submissions captured from the public pilot route.</p>
+        </article>
+        <article class="card">
+          <h3>Payments</h3>
+          <p id="admin-subscription-count" class="stat-value">0</p>
+          <p class="copy">Accounts with a PayHero payment record in Supabase.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="workspace-grid pilot">
+      <section class="window">
+        <div class="window-bar">
+          <div class="window-dots"><span></span><span></span><span></span></div>
+          <span class="window-label">Users</span>
+        </div>
+        <div id="admin-users" class="leads-grid"></div>
+        <div id="admin-users-empty" class="empty">No users loaded yet.</div>
+      </section>
+
+      <section class="window">
+        <div class="window-bar">
+          <div class="window-dots"><span></span><span></span><span></span></div>
+          <span class="window-label">Pilot Leads</span>
+        </div>
+        <div id="admin-leads" class="leads-grid"></div>
+        <div id="admin-leads-empty" class="empty">No pilot leads loaded yet.</div>
+      </section>
+    </section>
+  </div>
+</body>
+</html>

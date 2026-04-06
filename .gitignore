@@ -3,6 +3,7 @@ __pycache__/
 *.pyc
 *.log
 *.pid
+.env
 
 tools/downloads/
 

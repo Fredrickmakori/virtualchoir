@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pilot Desk | VirtualChoir Studio</title>
+  <link rel="stylesheet" href="/assets/styles.css" />
+  <script src="/assets/app.js" defer></script>
+</head>
+<body data-page="pilot">
+  <div class="layout">
+    <header class="topbar">
+      <div class="brand"><span class="mark" aria-hidden="true"></span><span>VirtualChoir Studio</span></div>
+      <nav class="nav">
+        <a href="/">Home</a>
+        <a href="/practice">Practice</a>
+        <a href="/studio">Studio</a>
+        <a href="/pilot" class="active">Pilot Desk</a>
+        <a href="/auth">Auth</a>
+        <a href="/admin">Admin</a>
+      </nav>
+      <div class="topbar-tag">Growth Window</div>
+    </header>
+
+    <section class="page-intro">
+      <p class="eyebrow" style="color:var(--accent-deep)">Pilot Desk</p>
+      <h1 class="page-title">Capture director interest and explain the offer clearly.</h1>
+      <p class="copy">This public route stays focused on pricing, pilot messaging, and signup. Saved lead review moves to the admin desk so contact data is not exposed publicly.</p>
+    </section>
+
+    <section class="workspace-grid pilot">
+      <section class="window">
+        <div class="window-bar">
+          <div class="window-dots"><span></span><span></span><span></span></div>
+          <span class="window-label">Pilot Signup</span>
+        </div>
+        <h2>Start Your Choir Pilot</h2>
+        <form id="pilot-form" class="stack">
+          <label class="field">Contact name<input id="pilot-name" type="text" placeholder="Grace Njeri" required /></label>
+          <label class="field">Email<input id="pilot-email" type="email" placeholder="director@choir.org" required /></label>
+          <label class="field">Choir or organization<input id="pilot-organization" type="text" placeholder="St. Mark Community Choir" required /></label>
+          <div class="two-col">
+            <label class="field">Choir type<select id="pilot-type"><option value="">Select choir type</option><option value="Church choir">Church choir</option><option value="Community choir">Community choir</option><option value="School ensemble">School ensemble</option><option value="Worship team">Worship team</option><option value="Other">Other</option></select></label>
+            <label class="field">Choir size<input id="pilot-size" type="text" placeholder="24 singers" /></label>
+          </div>
+          <label class="field">What do you need help with first?<textarea id="pilot-notes" placeholder="Example: SATB rehearsal tracks, section submissions, or PDF score imports."></textarea></label>
+          <div class="row"><button id="pilot-submit" type="submit">Request Pilot Setup</button></div>
+          <p id="pilot-status" class="status">Pilot requests are saved securely for admin review.</p>
+        </form>
+      </section>
+
+      <section class="window">
+        <div class="window-bar">
+          <div class="window-dots"><span></span><span></span><span></span></div>
+          <span class="window-label">Pilot Offer</span>
+        </div>
+        <h2>What happens after signup</h2>
+        <p class="copy">Use this route as the handoff after your product demo.</p>
+        <ul class="list">
+          <li>Offer onboarding for the first three songs.</li>
+          <li>Book a short score-to-practice-track demo.</li>
+          <li>Move paying users into the Auth route for account setup and billing.</li>
+          <li>Review submitted leads in the Admin route.</li>
+        </ul>
+      </section>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">Pricing Preview</p>
+          <h2>Keep pricing choir-based, not singer-based.</h2>
+        </div>
+        <p class="copy">The Auth route handles the actual PayHero payment prompt. This route stays focused on explaining the offer.</p>
+      </div>
+      <div class="cards">
+        <article class="card">
+          <h3>Starter</h3>
+          <p class="copy">$19/month for one choir testing the workflow.</p>
+          <ul class="list">
+            <li>1 choir workspace</li>
+            <li>Up to 10 active scores</li>
+            <li>Basic voice uploads</li>
+          </ul>
+        </article>
+        <article class="card">
+          <h3>Director</h3>
+          <p class="copy">$59/month for church and community choirs running active rehearsal seasons.</p>
+          <ul class="list">
+            <li>Unlimited active scores</li>
+            <li>Voice-part tracking</li>
+            <li>Onboarding for first 3 songs</li>
+          </ul>
+        </article>
+        <article class="card">
+          <h3>Organization</h3>
+          <p class="copy">$149/month for schools, ministries, and multi-ensemble teams.</p>
+          <ul class="list">
+            <li>Multiple ensembles</li>
+            <li>Shared admin support</li>
+            <li>Rollout help</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+  </div>
+</body>
+</html>

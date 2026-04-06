@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Practice Workspace | VirtualChoir Studio</title>
+  <link rel="stylesheet" href="/assets/styles.css" />
+  <script src="/assets/app.js" defer></script>
+</head>
+<body data-page="practice">
+  <div class="layout">
+    <header class="topbar">
+      <div class="brand"><span class="mark" aria-hidden="true"></span><span>VirtualChoir Studio</span></div>
+      <nav class="nav">
+        <a href="/">Home</a>
+        <a href="/practice" class="active">Practice</a>
+        <a href="/studio">Studio</a>
+        <a href="/pilot">Pilot Desk</a>
+        <a href="/auth">Auth</a>
+        <a href="/admin">Admin</a>
+      </nav>
+      <div class="topbar-tag">Score Window</div>
+    </header>
+
+    <section class="page-intro">
+      <p class="eyebrow" style="color:var(--accent-deep)">Practice Workspace</p>
+      <h1 class="page-title">Turn a score into rehearsal audio.</h1>
+      <p class="copy">This route is dedicated to score intake, notation processing, and rendered output so choir directors can stay focused on rehearsal prep.</p>
+    </section>
+
+    <section class="workspace-grid practice">
+      <section class="window">
+        <div class="window-bar">
+          <div class="window-dots"><span></span><span></span><span></span></div>
+          <span class="window-label">Upload Score</span>
+        </div>
+        <h2>MusicXML and PDF Intake</h2>
+        <p class="copy">Upload MusicXML directly or bring in a PDF score when Audiveris is installed.</p>
+        <form id="score-form" class="stack">
+          <label class="field">Score file<input id="score-file" type="file" accept=".musicxml,.xml,.mxl,.pdf" required /></label>
+          <button id="score-submit" type="submit">Generate Practice Audio</button>
+          <p class="hint">If PDF import is unavailable, set <code>AUDIVERIS_BIN</code> before trying again.</p>
+          <p id="score-status" class="status">Choose a score file to begin.</p>
+        </form>
+      </section>
+
+      <section class="window">
+        <div class="window-bar">
+          <div class="window-dots"><span></span><span></span><span></span></div>
+          <span id="score-source" class="window-label">Waiting for a score</span>
+        </div>
+        <h2>Rendered Output</h2>
+        <div id="score-result" class="result" hidden>
+          <div class="audio-shell"><audio id="practice-audio" controls preload="metadata"></audio></div>
+          <div class="details">
+            <div>Source file: <code id="source-file-path"></code></div>
+            <div>Parse source: <code id="parse-file-path"></code></div>
+            <div id="converted-row" hidden>Converted MusicXML: <code id="converted-file-path"></code></div>
+            <div>MIDI file: <code id="midi-file-path"></code></div>
+            <div>WAV file: <code id="wav-file-path"></code></div>
+            <div id="score-summary" class="summary"></div>
+          </div>
+          <ul id="score-warnings" class="warning-list"></ul>
+        </div>
+        <div id="score-empty" class="empty">Upload a score in the left window to generate rehearsal playback.</div>
+      </section>
+
+      <aside class="window">
+        <div class="window-bar">
+          <div class="window-dots"><span></span><span></span><span></span></div>
+          <span class="window-label">Run Sheet</span>
+        </div>
+        <h2>What Happens Here</h2>
+        <p class="copy">This page is your notation-to-audio workspace.</p>
+        <div class="stats" style="grid-template-columns:1fr; margin-top:12px;">
+          <article class="stat">
+            <p class="stat-label">Last Render</p>
+            <p id="stat-note-count" class="stat-value">No score yet</p>
+            <p class="copy">Rendered note count updates after each successful practice track.</p>
+          </article>
+        </div>
+        <ul class="list">
+          <li>Upload one score at a time.</li>
+          <li>Practice audio is rendered through FluidSynth.</li>
+          <li>Use the Studio route after generating playback.</li>
+        </ul>
+      </aside>
+    </section>
+  </div>
+</body>
+</html>

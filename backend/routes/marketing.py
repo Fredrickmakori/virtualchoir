@@ -1,8 +1,9 @@
 from __future__ import annotations
 
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel
 
+from backend.services.security import admin_user_context
 from backend.services.leads import list_pilot_leads, save_pilot_lead
 
 
@@ -32,7 +33,7 @@ class PilotLeadResponse(BaseModel):
 
 
 @router.get("/pilot-interest", response_model=list[PilotLeadResponse])
-def get_pilot_interest() -> list[PilotLeadResponse]:
+def get_pilot_interest(_: dict = Depends(admin_user_context)) -> list[PilotLeadResponse]:
     return [PilotLeadResponse(**lead) for lead in list_pilot_leads()]
 
 

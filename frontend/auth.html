@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Auth and Billing | VirtualChoir Studio</title>
+  <link rel="stylesheet" href="/assets/styles.css" />
+  <script src="/assets/app.js" defer></script>
+</head>
+<body data-page="auth">
+  <div class="layout">
+    <header class="topbar">
+      <div class="brand"><span class="mark" aria-hidden="true"></span><span>VirtualChoir Studio</span></div>
+      <nav class="nav">
+        <a href="/">Home</a>
+        <a href="/practice">Practice</a>
+        <a href="/studio">Studio</a>
+        <a href="/pilot">Pilot Desk</a>
+        <a href="/auth" class="active">Auth</a>
+        <a href="/admin">Admin</a>
+      </nav>
+      <div class="topbar-tag">Account Window</div>
+    </header>
+
+    <section class="page-intro">
+      <p class="eyebrow" style="color:var(--accent-deep)">Auth and Billing</p>
+      <h1 class="page-title">Manage users, roles, and PayHero payments.</h1>
+      <p class="copy">This route connects the app to Supabase-backed accounts and PayHero M-Pesa billing, while keeping the rest of the product focused on rehearsal workflows.</p>
+    </section>
+
+    <section class="split">
+      <section class="window">
+        <div class="window-bar">
+          <div class="window-dots"><span></span><span></span><span></span></div>
+          <span class="window-label">Create Account</span>
+        </div>
+        <h2>Sign Up</h2>
+        <form id="signup-form" class="stack">
+          <label class="field">Full name<input id="signup-name" type="text" placeholder="Grace Njeri" required /></label>
+          <label class="field">Email<input id="signup-email" type="email" placeholder="grace@example.com" required /></label>
+          <label class="field">Password<input id="signup-password" type="password" placeholder="At least 8 characters" required /></label>
+          <button id="signup-submit" type="submit">Create Account</button>
+        </form>
+      </section>
+
+      <section class="window">
+        <div class="window-bar">
+          <div class="window-dots"><span></span><span></span><span></span></div>
+          <span class="window-label">Access Account</span>
+        </div>
+        <h2>Sign In</h2>
+        <form id="login-form" class="stack">
+          <label class="field">Email<input id="login-email" type="email" placeholder="grace@example.com" required /></label>
+          <label class="field">Password<input id="login-password" type="password" placeholder="Your password" required /></label>
+          <button id="login-submit" type="submit">Sign In</button>
+        </form>
+      </section>
+    </section>
+
+    <section class="section">
+      <section class="window">
+        <div class="surface-head">
+          <div>
+            <h2>Account Summary</h2>
+            <p class="copy">Sign in to unlock PayHero prompts, admin access, and the latest payment state.</p>
+          </div>
+          <span id="auth-role-badge" class="badge">Logged out</span>
+        </div>
+        <div id="auth-session-empty" class="empty">No active account session yet. Sign up or sign in to continue.</div>
+        <div id="auth-session-card" class="details" hidden>
+          <div>Name: <code id="auth-user-name"></code></div>
+          <div>Email: <code id="auth-user-email"></code></div>
+          <div>Role: <code id="auth-user-role"></code></div>
+          <div>Latest payment: <code id="auth-user-subscription"></code></div>
+          <div class="row">
+            <button id="refresh-payment-button" type="button">Refresh Payment Status</button>
+            <button id="signout-button" class="ghost" type="button">Sign Out</button>
+          </div>
+        </div>
+        <p id="auth-status" class="status">Supabase-backed auth and PayHero billing are configured through the backend environment.</p>
+      </section>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">PayHero Checkout</p>
+          <h2>Send an M-Pesa prompt from the account window.</h2>
+        </div>
+        <p class="copy">Enter the customer phone number, choose a plan, then refresh the status after the prompt is completed.</p>
+      </div>
+      <label class="field" style="max-width:320px; margin-bottom:20px;">
+        PayHero phone number
+        <input id="payment-phone" type="tel" placeholder="0712345678" />
+      </label>
+      <div id="billing-plans" class="cards"></div>
+      <div id="billing-empty" class="empty" hidden>No billing plans are configured yet.</div>
+    </section>
+  </div>
+</body>
+</html>

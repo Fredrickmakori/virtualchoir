@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Studio Workspace | VirtualChoir Studio</title>
+  <link rel="stylesheet" href="/assets/styles.css" />
+  <script src="/assets/app.js" defer></script>
+</head>
+<body data-page="studio">
+  <div class="layout">
+    <header class="topbar">
+      <div class="brand"><span class="mark" aria-hidden="true"></span><span>VirtualChoir Studio</span></div>
+      <nav class="nav">
+        <a href="/">Home</a>
+        <a href="/practice">Practice</a>
+        <a href="/studio" class="active">Studio</a>
+        <a href="/pilot">Pilot Desk</a>
+        <a href="/auth">Auth</a>
+        <a href="/admin">Admin</a>
+      </nav>
+      <div class="topbar-tag">Singer Window</div>
+    </header>
+
+    <section class="page-intro">
+      <p class="eyebrow" style="color:var(--accent-deep)">Studio Workspace</p>
+      <h1 class="page-title">Collect and review singer takes.</h1>
+      <p class="copy">This route is dedicated to voice uploads, in-browser recording, and recent take review so section work feels like a lightweight studio app.</p>
+    </section>
+
+    <section class="workspace-grid studio">
+      <section class="window">
+        <div class="window-bar">
+          <div class="window-dots"><span></span><span></span><span></span></div>
+          <span class="window-label">Upload or Record</span>
+        </div>
+        <h2>Voice Studio</h2>
+        <form id="voice-form" class="stack">
+          <div class="two-col">
+            <label class="field">Singer name<input id="singer-name" type="text" placeholder="Jane Doe" required /></label>
+            <label class="field">Voice part<select id="voice-part" required><option value="Soprano">Soprano</option><option value="Alto">Alto</option><option value="Tenor">Tenor</option><option value="Bass">Bass</option><option value="Other">Other</option></select></label>
+          </div>
+          <label class="field">Take label<input id="take-label" type="text" placeholder="Verse pass, harmony check, blend review..." /></label>
+          <label class="field">Notes<textarea id="voice-notes" placeholder="Anything the conductor should know about this take."></textarea></label>
+          <label class="field">Upload audio file<input id="voice-file" type="file" accept="audio/*" /></label>
+          <div class="row">
+            <button id="record-button" class="secondary" type="button">Start Recording</button>
+            <button id="stop-button" class="ghost" type="button" disabled>Stop</button>
+            <button id="voice-submit" type="submit">Upload Voice Take</button>
+          </div>
+          <audio id="voice-preview" controls preload="metadata" hidden></audio>
+          <p id="voice-status" class="status">No voice take selected yet.</p>
+        </form>
+      </section>
+
+      <section class="window">
+        <div class="window-bar">
+          <div class="window-dots"><span></span><span></span><span></span></div>
+          <span class="window-label">Review Takes</span>
+        </div>
+        <div class="surface-head">
+          <div>
+            <h2>Recent Takes</h2>
+            <p class="copy">Filter the board by singer name, part, label, or notes.</p>
+          </div>
+          <span id="stat-take-count" class="badge alt">0 takes</span>
+        </div>
+        <div class="toolbar">
+          <div class="search"><input id="takes-filter" type="search" placeholder="Search takes by singer, part, label, or notes..." /></div>
+        </div>
+        <div id="takes-list" class="takes-grid"></div>
+        <div id="takes-empty" class="empty">No voice takes uploaded yet.</div>
+      </section>
+    </section>
+  </div>
+</body>
+</html>
