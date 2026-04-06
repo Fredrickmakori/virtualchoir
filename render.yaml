@@ -1,0 +1,18 @@
+services:
+  - type: web
+    name: virtualchoir-backend
+    runtime: python3
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn backend.main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: SUPABASE_URL
+        value: https://lklxwhqqfuusnznohsyr.supabase.co
+      - key: SITE_URL
+        value: https://your-frontend-domain.vercel.app
+      - key: ADMIN_EMAILS
+        value: your-admin-email@example.com
+      # Set these sensitive keys in Render dashboard Environment settings:
+      # SUPABASE_ANON_KEY
+      # SUPABASE_SERVICE_ROLE_KEY
+      # PAYHERO_BASIC_AUTH_TOKEN (if using billing)
+      # PAYHERO_CHANNEL_ID (if using billing)
