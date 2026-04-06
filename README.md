@@ -1,16 +1,21 @@
 # AI Choir Practice System
 
-A complete MVP for choir-practice audio generation using `FastAPI`, `music21`, MIDI, and `FluidSynth`.
+A CPU-based virtual choir MVP for score intake, practice-audio generation, and singer take uploads using `FastAPI`, `music21`, MIDI, and `FluidSynth`.
+
+For product positioning, pricing, outreach copy, and a 30-day launch plan, see `MARKETING.md`.
 
 ## What It Does
 
-- Accepts a `MusicXML` upload
+- Accepts `MusicXML` uploads
+- Accepts `PDF` score uploads and converts them through `Audiveris` when available
 - Parses note events with `music21`
 - Extracts `pitch`, `duration`, `offset`, and rest timing
 - Converts parsed parts into a valid multi-track MIDI file
 - Renders MIDI to WAV with `FluidSynth` and a SoundFont
 - Returns the generated WAV path and serves the audio file
-- Provides a plain HTML + JavaScript frontend for upload and playback
+- Provides a plain HTML + JavaScript frontend for score upload, playback, and voice-take uploads
+- Supports singer take uploads by voice part, with optional in-browser recording
+- Includes a landing-page pilot signup flow that stores director interest locally
 
 ## Project Structure
 
@@ -18,9 +23,12 @@ A complete MVP for choir-practice audio generation using `FastAPI`, `music21`, M
 backend/
   main.py
   routes/music.py
+  routes/voice.py
   services/parser.py
   services/midi.py
   services/audio.py
+  services/score.py
+  services/voice.py
 
 frontend/
   index.html
@@ -54,25 +62,36 @@ Open:
 
 ## API
 
-### `POST /upload-music`
+### `POST /upload-score`
 
-Upload a `MusicXML` file as multipart form data under the `file` field.
+Upload a score file as multipart form data under the `file` field.
+
+Supported score types:
+
+- `.musicxml`
+- `.xml`
+- `.mxl`
+- `.pdf`
 
 Example:
 
 ```powershell
-curl.exe -X POST -F "file=@tests/fixtures/sample.musicxml" http://127.0.0.1:8000/upload-music
+curl.exe -X POST -F "file=@tests/fixtures/sample.musicxml" http://127.0.0.1:8000/upload-score
 ```
 
 Example response:
 
 ```json
 {
-  "message": "MusicXML parsed and rendered successfully.",
-  "upload_file_path": "uploads/abc123.musicxml",
+  "message": "Score parsed and rendered successfully.",
+  "source_type": "musicxml",
+  "source_file_path": "uploads/scores/abc123.musicxml",
+  "parse_file_path": "uploads/scores/abc123.musicxml",
+  "converted_musicxml_path": null,
   "midi_file_path": "outputs/abc123.mid",
   "wav_file_path": "outputs/abc123.wav",
   "audio_url": "/outputs/abc123.wav",
+  "warnings": [],
   "parsed_score": {
     "title": "sample",
     "tempo_bpm": 96,
@@ -88,6 +107,72 @@ Example response:
   }
 }
 ```
+
+### `POST /upload-music`
+
+Backward-compatible alias for `POST /upload-score`.
+
+### `POST /upload-voice`
+
+Upload a singer take as multipart form data.
+
+Fields:
+
+- `singer_name`
+- `voice_part`
+- `take_label` optional
+- `notes` optional
+- `file`
+
+Example:
+
+```powershell
+curl.exe -X POST ^
+  -F "singer_name=Jane Doe" ^
+  -F "voice_part=Alto" ^
+  -F "take_label=Verse pass" ^
+  -F "file=@outputs/sample.wav" ^
+  http://127.0.0.1:8000/upload-voice
+```
+
+### `GET /voice-takes`
+
+Returns the uploaded studio takes, newest first.
+
+### `POST /pilot-interest`
+
+Accepts JSON from the landing-page pilot form and stores interest locally in `data/leads/pilot_interest.json`.
+
+Example:
+
+```powershell
+curl.exe -X POST ^
+  -H "Content-Type: application/json" ^
+  -d "{\"contact_name\":\"Grace Njeri\",\"email\":\"director@example.com\",\"organization\":\"St. Mark Choir\",\"choir_type\":\"Church choir\",\"choir_size\":\"24 singers\",\"notes\":\"Need SATB practice tracks for Easter repertoire.\"}" ^
+  http://127.0.0.1:8000/pilot-interest
+```
+
+### `GET /pilot-interest`
+
+Returns saved pilot requests, newest first.
+
+## PDF Support With Audiveris
+
+PDF support is optional and depends on `Audiveris` for optical music recognition.
+
+Install Audiveris with `winget`:
+
+```powershell
+winget install -e --id audiveris.org.Audiveris --source winget
+```
+
+If Audiveris is not on `PATH`, point the app to it:
+
+```powershell
+$env:AUDIVERIS_BIN="C:\Path\To\Audiveris.exe"
+```
+
+If PDF upload is attempted without Audiveris, the API returns a clear setup error instead of failing silently.
 
 ## FluidSynth and SoundFont
 
@@ -109,4 +194,6 @@ $env:SOUNDFONT_PATH="C:\path\to\your-soundfont.sf2"
 - Generated `outputs/sample.mid`
 - Rendered `outputs/sample.wav`
 - Verified the FastAPI root page and `/health`
-- Verified `POST /upload-music` end-to-end with a real multipart upload
+- Verified `POST /upload-score` end-to-end with a real multipart MusicXML upload
+- Verified `POST /upload-voice` with a real audio upload
+- Verified `GET /voice-takes`

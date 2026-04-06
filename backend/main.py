@@ -5,7 +5,9 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 
+from backend.routes.marketing import router as marketing_router
 from backend.routes.music import router as music_router
+from backend.routes.voice import router as voice_router
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
@@ -25,7 +27,9 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+app.include_router(marketing_router)
 app.include_router(music_router)
+app.include_router(voice_router)
 app.mount("/outputs", StaticFiles(directory=OUTPUTS_DIR), name="outputs")
 app.mount("/uploads", StaticFiles(directory=UPLOADS_DIR), name="uploads")
 

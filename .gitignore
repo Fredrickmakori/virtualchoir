@@ -8,6 +8,15 @@ tools/downloads/
 
 uploads/*
 !uploads/.gitkeep
+!uploads/**/
+!uploads/**/.gitkeep
 
 outputs/*
 !outputs/.gitkeep
+!outputs/**/
+!outputs/**/.gitkeep
+
+data/*
+!data/.gitkeep
+!data/**/
+!data/**/.gitkeep
